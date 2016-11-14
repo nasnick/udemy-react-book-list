@@ -14,7 +14,12 @@ class BookList extends Component {
     // Books coming from index.js which come from reducer_books.js
 		return this.props.books.map((book) => {
 			return (
-               <li key={book.title} className="list-group-item">{book.title}</li>     
+               <li 
+                 key={book.title}
+                 onClick={() => this.props.selectBook(book)}
+                 className="list-group-item">
+                 {book.title}
+               </li>     
 				);
 		});
 	}
@@ -27,17 +32,21 @@ class BookList extends Component {
     }
 }
 
+// Props inside of bookList
 function mapStateToProps(state) {
-  //Whatever gets returned here will show up as props in BookList
   return {
     books: state.books
   };
 }
 
+// Props available to bookList container
 function mapDispatchToProps(dispatch){
-  //Second argument is the action creator that was imported at the top
-  return bindActionCreators({selectBook: selectBook}, dispatch});
+  //selectBook is the action creator that was imported at the top
+  //whenever SelectBook is called, the result will be passed to all reducers
+  return bindActionCreators({selectBook: selectBook}, dispatch);
 }
 
+// Promote bookList from component to container - new dispatch method selectBook 
+// made available as prop
 export default connect(mapStateToProps, mapDispatchToProps)(BookList);
 
